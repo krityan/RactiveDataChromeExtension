@@ -1,5 +1,5 @@
 {
-  "name": "Ractive Data",
+  "name": "Ractive Data Test",
   "version": "1.2",
   "description": "Adds Ractive context data to chrome dev tools.",
   "devtools_page": "devtools.html",
