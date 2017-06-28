@@ -7,9 +7,10 @@
  * Component name
  * Data properties
  * Computed properties
+ * Inherited properties
  */
 chrome.devtools.panels.elements.createSidebarPane(
-    "Ractive Data Test",
+    "Ractive Data 1.3",
     function(sidebar) {
 
         /*
@@ -26,7 +27,7 @@ chrome.devtools.panels.elements.createSidebarPane(
          */
         function updatePane(compName) {
             var query = "(" + getQuery.toString() + ")()";
-            sidebar.setExpression(query, compName);
+            sidebar.setExpression(query,compName);
         }
         
         /*
@@ -37,13 +38,10 @@ chrome.devtools.panels.elements.createSidebarPane(
             let properties = {};
 
             // Data properties
-            if (!$0 || !$0._ractive) { // if there is no (ractive) node selected
+            if (!$0 || !$0._ractive) { 
                 return {message: 'Select a Ractive node for more details'};
-            } else if ($0._ractive.root) { // Ractive version 0.7
-                Object.assign(properties, Ractive.getNodeInfo($0).ractive.get());       //{{potential better query?}}
-                //Object.assign(properties, $0._ractive.root.get($0._ractive.keypath.str));
-            } else if ($0._ractive.fragment &&$0._ractive.fragment.findContext) { // Ractive version 0.8
-                Object.assign(properties, $0._ractive.fragment.findContext.get());
+            } else if (Ractive.getNodeInfo($0)) {
+                Object.assign(properties, Ractive.getNodeInfo($0).ractive.get()); 
             } else {
                 return {message: 'Unsupported Ractive version'};
             }
