@@ -10,7 +10,7 @@
  * Inherited properties
  */
 chrome.devtools.panels.elements.createSidebarPane(
-    "Ractive Data 1.3",
+    "Ractive Data",
     function(sidebar) {
 
         /*
@@ -47,7 +47,7 @@ chrome.devtools.panels.elements.createSidebarPane(
             }
 
             // inherited properties - currently only supports SquaredUp
-            if (Ractive.components.SquaredUpBase()) {
+            if (Ractive.components.SquaredUpBase) {
                 // component's superclass' data
                 let superClass = (Ractive.components.SquaredUpBase().get()); // TODO: find dynamic way of getting superclass if possible
                 
