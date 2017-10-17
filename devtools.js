@@ -35,12 +35,15 @@ chrome.devtools.panels.elements.createSidebarPane(
          */
         function getQuery() {
 
+            let ractiveVersion = Ractive.VERSION;
+            let majorVersion = ractiveVersion.substr(0, 3);
+
             let properties = {};
 
             // Data properties
             if (!$0 || !$0._ractive) { 
                 return {message: 'Select a Ractive node for more details'};
-            } else if (Ractive.getNodeInfo($0)) {
+            } else if (Ractive.getNodeInfo($0)) { // works for 0.7-0.9
                 Object.assign(properties, Ractive.getNodeInfo($0).ractive.get()); 
             } else {
                 return {message: 'Unsupported Ractive version'};
@@ -79,13 +82,22 @@ chrome.devtools.panels.elements.createSidebarPane(
             let comps = {};
             
             // adds computed properties to data properties and returns the result
-            let computeds = Object.keys(comp)
-                .filter(key => !key.startsWith('${'))
-                .reduce((acc, key) => {
-                    acc[key] = comp[key].getter();
-                    return acc;
-                }, comps);
-            
+            if (majorVersion === "0.9") {
+                var computeds = Object.keys(comp)
+                    .reduce((acc, key) => {
+                        acc[key] = comp[key].value;
+                        return acc;
+                    }, comps);
+            }
+            else {
+                var computeds = Object.keys(comp)
+                    .filter(key => !key.startsWith('${'))
+                    .reduce((acc, key) => {
+                        acc[key] = comp[key].getter();
+                        return acc;
+                    }, comps);
+            }
+
             properties['Computed Properties'] = computeds;
 
             return properties;
