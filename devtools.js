@@ -82,20 +82,23 @@ chrome.devtools.panels.elements.createSidebarPane(
             let comps = {};
             
             // adds computed properties to data properties and returns the result
-            if (majorVersion === "0.9") {
-                var computeds = Object.keys(comp)
-                    .reduce((acc, key) => {
-                        acc[key] = comp[key].value;
-                        return acc;
-                    }, comps);
-            }
-            else {
-                var computeds = Object.keys(comp)
-                    .filter(key => !key.startsWith('${'))
-                    .reduce((acc, key) => {
-                        acc[key] = comp[key].getter();
-                        return acc;
-                    }, comps);
+            switch(majorVersion) {
+                case "0.9": 
+                    var computeds = Object.keys(comp)
+                        .reduce((acc, key) => {
+                            acc[key] = comp[key].value;
+                            return acc;
+                        }, comps);
+                    break;
+
+                default: 
+                    var computeds = Object.keys(comp)
+                        .filter(key => !key.startsWith('${'))
+                        .reduce((acc, key) => {
+                            acc[key] = comp[key].getter();
+                            return acc;
+                        }, comps);
+                    break;
             }
 
             properties['Computed Properties'] = computeds;
